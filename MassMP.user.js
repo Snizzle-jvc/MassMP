@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        MassMP
 // @author      Snizzle
-// @version     1.0
+// @version     1.1
 // @downloadURL https://github.com/Snizzle-jvc/MassMP/raw/master/MassMP.user.js
 // @updateURL   https://github.com/Snizzle-jvc/MassMP/raw/master/MassMP.user.js
 // @supportURL  http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=Snizzle;Snitchzzle
@@ -24,8 +24,8 @@ $(function(a) {
     }
   })();
   a(".mass-mp").each(function() {
-    var b = a(this).parent().parent().children().html().trim();
-    localStorage.getItem("massmp").includes(b) && a(this).hide();
+    var b = a(this).parent().parent().children().html().trim(), c = a(".account-pseudo").html();
+    (localStorage.getItem("massmp").includes(b) || b == c) && a(this).hide();
   });
   a(".mass-mp").click(function() {
     var b = a(this).parent().parent().children().html().trim(), c = JSON.parse(localStorage.getItem("massmp")) || [];
