@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        MassMP
 // @author      Snizzle
-// @version     1.2
+// @version     1.3
 // @downloadURL https://github.com/Snizzle-jvc/MassMP/raw/master/MassMP.user.js
 // @updateURL   https://github.com/Snizzle-jvc/MassMP/raw/master/MassMP.user.js
 // @supportURL  http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=Snizzle;Snitchzzle
@@ -20,7 +20,7 @@ $(function(a) {
   "[]" == localStorage.getItem("massmp") && a(".panel-mass-mp").hide();
   (function() {
     for (var b = 0; b < d.length; b++) {
-      a("#liste-mass-mp").append("<span class='btn btn-actu-new-list-forum btn-list-users' id='" + d[b] + "' title='Supprimer ce pseudo du MP' style='margin-right:5px;margin-top:5px'>" + d[b] + "<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>");
+      a("#liste-mass-mp").append("<span class='btn btn-actu-new-list-forum btn-list-users' id='" + d[b].toLowerCase() + "' title='Supprimer ce pseudo du MP' style='margin-right:5px;margin-top:5px'>" + d[b].toLowerCase() + "<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>");
     }
   })();
   a(".mass-mp").each(function() {
@@ -28,11 +28,11 @@ $(function(a) {
     (localStorage.getItem("massmp").includes(b) || b == c) && a(this).hide();
   });
   a(".mass-mp").click(function() {
-    var b = a(this).parent().parent().children().html().trim(), c = JSON.parse(localStorage.getItem("massmp")) || [];
+    var b = a(this).parent().parent().children().html().trim().toLowerCase(), c = JSON.parse(localStorage.getItem("massmp")) || [];
     c.push(b);
     localStorage.setItem("massmp", JSON.stringify(c));
     a(this).hide();
-    a("#liste-mass-mp").append("<span class='btn btn-actu-new-list-forum btn-list-users' id='" + b + "' title='Supprimer ce pseudo du MP' style='margin-right:5px;margin-top:5px'>" + b + "<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>");
+    a("#liste-mass-mp").append("<span class='btn btn-actu-new-list-forum btn-list-users' id='" + b.toLowerCase() + "' title='Supprimer ce pseudo du MP' style='margin-right:5px;margin-top:5px'>" + b.toLowerCase() + "<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>");
     a(".panel-mass-mp").show();
     a(".mass-mp").each(function() {
       var b = a(this).parent().parent().children().html().trim();
@@ -49,7 +49,7 @@ $(function(a) {
     localStorage.setItem("massmp", "[]");
   }
   a("#liste-mass-mp").on("click", ".btn.btn-actu-new-list-forum.btn-list-users", function() {
-    var b = JSON.parse(localStorage.getItem("massmp")) || [], c = a(this).html();
+    var b = JSON.parse(localStorage.getItem("massmp")) || [], c = a(this).attr("id");
     c = b.indexOf(c);
     0 <= c && (b.splice(c, 1), a(this).hide(), localStorage.setItem("massmp", JSON.stringify(b)));
   });
