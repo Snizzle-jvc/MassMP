@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        MassMP
 // @author      Snizzle
-// @version     1.1
+// @version     1.2
 // @downloadURL https://github.com/Snizzle-jvc/MassMP/raw/master/MassMP.user.js
 // @updateURL   https://github.com/Snizzle-jvc/MassMP/raw/master/MassMP.user.js
 // @supportURL  http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=Snizzle;Snitchzzle
@@ -20,7 +20,7 @@ $(function(a) {
   "[]" == localStorage.getItem("massmp") && a(".panel-mass-mp").hide();
   (function() {
     for (var b = 0; b < d.length; b++) {
-      a("#liste-mass-mp").append("<span class='btn btn-actu-new-list-forum btn-list-users' title='Supprimer ce pseudo du MP' style='margin-right:5px;margin-top:5px'>" + d[b] + "</span>");
+      a("#liste-mass-mp").append("<span class='btn btn-actu-new-list-forum btn-list-users' id='" + d[b] + "' title='Supprimer ce pseudo du MP' style='margin-right:5px;margin-top:5px'>" + d[b] + "<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>");
     }
   })();
   a(".mass-mp").each(function() {
@@ -32,7 +32,7 @@ $(function(a) {
     c.push(b);
     localStorage.setItem("massmp", JSON.stringify(c));
     a(this).hide();
-    a("#liste-mass-mp").append("<span class='btn btn-actu-new-list-forum btn-list-users' title='Supprimer ce pseudo du MP' style='margin-right:5px;margin-top:5px'>" + b + "</span>");
+    a("#liste-mass-mp").append("<span class='btn btn-actu-new-list-forum btn-list-users' id='" + b + "' title='Supprimer ce pseudo du MP' style='margin-right:5px;margin-top:5px'>" + b + "<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>");
     a(".panel-mass-mp").show();
     a(".mass-mp").each(function() {
       var b = a(this).parent().parent().children().html().trim();
@@ -40,11 +40,14 @@ $(function(a) {
     });
   });
   a(".send-mass-mp").click(function() {
-    if (1 == confirm("Envoyer le MP ?")) {
-      var a = JSON.parse(localStorage.getItem("massmp")) || [];
-      "[]" !== localStorage.getItem("massmp") && (a = "http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=" + a.join(";"), window.open(a + "#massmp").focus(), localStorage.setItem("massmp", "[]"));
-    }
+    1 == confirm("Envoyer le MP ?") && (JSON.parse(localStorage.getItem("massmp")), "[]" !== localStorage.getItem("massmp") && window.open("http://www.jeuxvideo.com/messages-prives/nouveau.php#massmp").focus());
   });
+  if ("http://www.jeuxvideo.com/messages-prives/nouveau.php#massmp" === window.location.href) {
+    for (var e = 0; e < d.length; e++) {
+      a(".form-control-tag-inner").append('<span class="label label-default"><span class="text-">' + d[e] + '</span><span class="close close-tag" aria-hidden="true">\u00d7</span><input type="hidden" name="participants[' + d[e] + ']" value="' + d[e] + '"></span>');
+    }
+    localStorage.setItem("massmp", "[]");
+  }
   a("#liste-mass-mp").on("click", ".btn.btn-actu-new-list-forum.btn-list-users", function() {
     var b = JSON.parse(localStorage.getItem("massmp")) || [], c = a(this).html();
     c = b.indexOf(c);
