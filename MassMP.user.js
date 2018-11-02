@@ -13,47 +13,78 @@
 // @match       *://www.jeuxvideo.com/forums/*
 // @run-at      document-end
 // ==/UserScript==
-$(function(a) {
-  var d = JSON.parse(localStorage.getItem("massmp")) || [];
-  a(".bloc-options-msg").prepend('<span class="picto-msg-nuke mass-mp" title="Mass MP" style="filter: grayscale(1);"><span>Mass MP</span></span>');
-  a(".col-right").prepend('<div class="panel panel-jv-forum panel-mass-mp"><div class="panel-heading panel-heading-mass-mp">Mass-MP<span class="picto-msg-croix clear-mass-mp" title="Vider la liste" style="float:right;cursor:pointer;margin: 8px 8px 0px 0px;filter: grayscale(1);"></span><span class="picto-msg-nuke send-mass-mp" title="Envoyer le MP" style="color:white;float:right;margin: 8px 8px 0 0;cursor:pointer;"></span></div><div class="panel-body panel-body-mass-mp" style="text-align:center;"><div class="scrollable-content bloc-info-forum" id="liste-mass-mp"></div></div></div>');
-  "[]" == localStorage.getItem("massmp") && a(".panel-mass-mp").hide();
-  (function() {
-    for (var b = 0; b < d.length; b++) {
-      a("#liste-mass-mp").append("<span class='btn btn-actu-new-list-forum btn-list-users' id='" + d[b].toLowerCase() + "' title='Supprimer ce pseudo du MP' style='margin-right:5px;margin-top:5px'>" + d[b].toLowerCase() + "<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>");
+$(function($){
+    var link = "http://www.jeuxvideo.com/messages-prives/nouveau.php";
+    var getPseudos = JSON.parse(localStorage.getItem('massmp')) || [];
+    var btnSend = '<span class="picto-msg-nuke send-mass-mp" title="Envoyer le MP" style="color:white;float:right;margin: 8px 8px 0 0;cursor:pointer;"></span>';
+    var btnClear = '<span class="picto-msg-croix clear-mass-mp" title="Vider la liste" style="float:right;cursor:pointer;margin: 8px 8px 0px 0px;filter: grayscale(1);"></span>';
+
+    $(".bloc-options-msg").prepend('<span class="picto-msg-nuke mass-mp" title="Mass MP" style="filter: grayscale(1);"><span>Mass MP</span></span>');
+    $(".col-right").prepend('<div class="panel panel-jv-forum panel-mass-mp"><div class="panel-heading panel-heading-mass-mp">Mass-MP'+btnClear+btnSend+'</div><div class="panel-body panel-body-mass-mp" style="text-align:center;"><div class="scrollable-content bloc-info-forum" id="liste-mass-mp"></div></div></div>');
+
+    if (localStorage.getItem('massmp') == "[]") {$(".panel-mass-mp").hide();}
+    function getPseudosList(){
+        for (var z = 0; z < getPseudos.length; z++) {
+            $("#liste-mass-mp").append("<span class='btn btn-actu-new-list-forum btn-list-users' id='"+getPseudos[z].toLowerCase()+"' title='Supprimer ce pseudo du MP' style='margin-right:5px;margin-top:5px'>"+getPseudos[z].toLowerCase()+"<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>");
+        }
     }
-  })();
-  a(".mass-mp").each(function() {
-    var b = a(this).parent().parent().children().html().trim(), c = a(".account-pseudo").html();
-    (localStorage.getItem("massmp").includes(b) || b == c) && a(this).hide();
-  });
-  a(".mass-mp").click(function() {
-    var b = a(this).parent().parent().children().html().trim().toLowerCase(), c = JSON.parse(localStorage.getItem("massmp")) || [];
-    c.push(b);
-    localStorage.setItem("massmp", JSON.stringify(c));
-    a(this).hide();
-    a("#liste-mass-mp").append("<span class='btn btn-actu-new-list-forum btn-list-users' id='" + b.toLowerCase() + "' title='Supprimer ce pseudo du MP' style='margin-right:5px;margin-top:5px'>" + b.toLowerCase() + "<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>");
-    a(".panel-mass-mp").show();
-    a(".mass-mp").each(function() {
-      var b = a(this).parent().parent().children().html().trim();
-      localStorage.getItem("massmp").includes(b) && a(this).hide();
-    });
-  });
-  a(".send-mass-mp").click(function() {
-    1 == confirm("Envoyer le MP ?") && (JSON.parse(localStorage.getItem("massmp")), "[]" !== localStorage.getItem("massmp") && window.open("http://www.jeuxvideo.com/messages-prives/nouveau.php#massmp").focus());
-  });
-  if ("http://www.jeuxvideo.com/messages-prives/nouveau.php#massmp" === window.location.href) {
-    for (var e = 0; e < d.length; e++) {
-      a(".form-control-tag-inner").append('<span class="label label-default"><span class="text-">' + d[e] + '</span><span class="close close-tag" aria-hidden="true">\u00d7</span><input type="hidden" name="participants[' + d[e] + ']" value="' + d[e] + '"></span>');
+
+    getPseudosList();
+
+    $(".mass-mp").each(function() {
+        var pseudo = $(this).parent().parent().children().html().trim();
+        var user = $(".account-pseudo").html();
+        if (localStorage.getItem('massmp').includes(pseudo) || (pseudo == user)) {
+            $(this).hide();}
+    })
+
+    $(".mass-mp").click(function() {
+        var pseudo = $(this).parent().parent().children().html().trim().toLowerCase();
+        var oldItems = JSON.parse(localStorage.getItem('massmp')) || [];
+        var newItem = pseudo;
+        oldItems.push(newItem);
+        localStorage.setItem('massmp',JSON.stringify(oldItems));
+        $(this).hide();
+        $("#liste-mass-mp").append("<span class='btn btn-actu-new-list-forum btn-list-users' id='"+pseudo.toLowerCase()+"' title='Supprimer ce pseudo du MP' style='margin-right:5px;margin-top:5px'>"+newItem.toLowerCase()+"<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>");
+        $(".panel-mass-mp").show();
+        $(".mass-mp").each(function() {
+            var pseudo = $(this).parent().parent().children().html().trim();
+            if (localStorage.getItem('massmp').includes(pseudo)) {
+                $(this).hide();}
+        })
+    })
+
+    $(".send-mass-mp").click(function(){
+        var r = confirm("Envoyer le MP ?");
+        if (r == true) {
+            var getPseudos = JSON.parse(localStorage.getItem('massmp')) || [];
+            if (localStorage.getItem('massmp') !== "[]") {
+                window.open(link+'#massmp').focus();
+            }
+        }
+    })
+    if (window.location.href === (link+'#massmp')) {
+        for (var z = 0; z < getPseudos.length; z++) {
+            $(".form-control-tag-inner").append('<span class="label label-default"><span class="text-">'+getPseudos[z]+'</span><span class="close close-tag" aria-hidden="true">×</span><input type="hidden" name="participants['+getPseudos[z]+']" value="'+getPseudos[z]+'"></span>')
+        }
+        localStorage.setItem("massmp","[]");
     }
-    localStorage.setItem("massmp", "[]");
-  }
-  a("#liste-mass-mp").on("click", ".btn.btn-actu-new-list-forum.btn-list-users", function() {
-    var b = JSON.parse(localStorage.getItem("massmp")) || [], c = a(this).attr("id");
-    c = b.indexOf(c);
-    0 <= c && (b.splice(c, 1), a(this).hide(), localStorage.setItem("massmp", JSON.stringify(b)));
-  });
-  a(".clear-mass-mp").click(function() {
-    1 == confirm("Vider la liste de signalements ?") && (localStorage.setItem("massmp", "[]"), a(".panel-mass-mp").hide(), location.reload());
-  });
-});
+    $('#liste-mass-mp').on('click', '.btn.btn-actu-new-list-forum.btn-list-users', function() {
+        var getPseudos = JSON.parse(localStorage.getItem('massmp')) || [];
+        var pseudo = $(this).attr("id");
+        var index = getPseudos.indexOf(pseudo);
+        if (index >= 0) {
+            getPseudos.splice(index, 1);
+            $(this).hide();
+            localStorage.setItem("massmp", JSON.stringify(getPseudos));
+        }
+    })
+
+    $(".clear-mass-mp").click(function(){
+        var r = confirm("Vider la liste de signalements ?");
+        if (r == true) {
+            localStorage.setItem("massmp","[]");
+            $(".panel-mass-mp").hide();location.reload()}
+
+    })
+})
