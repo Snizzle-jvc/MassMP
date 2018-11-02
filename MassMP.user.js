@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        MassMP
 // @author      Snizzle
-// @version     2.0
+// @version     2.1
 // @downloadURL https://github.com/Snizzle-jvc/MassMP/raw/master/MassMP.user.js
 // @updateURL   https://github.com/Snizzle-jvc/MassMP/raw/master/MassMP.user.js
 // @supportURL  http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=Snizzle;Snitchzzle
@@ -45,7 +45,6 @@ $(function(a) {
     1 == confirm("Envoyer le MP ?") && (JSON.parse(localStorage.getItem("massmp")), "[]" !== localStorage.getItem("massmp") && window.open("http://www.jeuxvideo.com/messages-prives/nouveau.php#massmp").focus());
   });
   if ("http://www.jeuxvideo.com/messages-prives/nouveau.php#massmp" === d) {
-    alert("dqzdqz");
     for (d = 0; d < e.length; d++) {
       a(".form-control-tag-inner").append('<span class="label label-default"><span class="text-">' + e[d] + '</span><span class="close close-tag" aria-hidden="true">\u00d7</span><input type="hidden" name="participants[' + e[d] + ']" value="' + e[d] + '"></span>');
     }
