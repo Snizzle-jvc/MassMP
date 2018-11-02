@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        MassMP
 // @author      Snizzle
-// @version     1.7
+// @version     1.8
 // @downloadURL https://github.com/Snizzle-jvc/MassMP/raw/master/MassMP.user.js
 // @updateURL   https://github.com/Snizzle-jvc/MassMP/raw/master/MassMP.user.js
 // @supportURL  http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=Snizzle;Snitchzzle
