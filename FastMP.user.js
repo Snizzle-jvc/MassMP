@@ -2,8 +2,8 @@
 // @name        FastMP
 // @author      Snizzle
 // @version     3.2
-// @downloadURL https://github.com/Snizzle-jvc/MassMP/raw/master/MassMP.user.js
-// @updateURL   https://github.com/Snizzle-jvc/MassMP/raw/master/MassMP.user.js
+// @downloadURL https://github.com/Snizzle-jvc/MassMP/raw/master/FastMP.user.js
+// @updateURL   https://github.com/Snizzle-jvc/MassMP/raw/master/FastMP.user.js
 // @supportURL  http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=Snizzle;Snitchzzle
 // @copyright   2018, Snizzle
 // @licence     MIT
